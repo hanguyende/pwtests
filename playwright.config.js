@@ -10,7 +10,10 @@ const config = {
   },
   reporter: 'html',
   use: {
-    browserName : 'firefox'
+    browserName : 'firefox',
+    headless: false,
+    screenshoot: 'on',
+    trace: 'retain-on-failure',
   }
 };
 
