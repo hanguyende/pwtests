@@ -73,7 +73,7 @@ test('test new windows context', async ({browser})=>
     console.log(await username.textContent);
 });
 
-test.only('client login app', async ({page})=>
+test('client login app', async ({page})=>
 {
     const products = page.locator('.card-body');
     const productName = "zara coat 3";
