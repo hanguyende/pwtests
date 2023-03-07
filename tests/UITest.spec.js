@@ -4,7 +4,7 @@ test('browser context Playwright Test', async ({browser})=>
 {
     const context = await browser.newContext();
     const page = await context.newPage();
-    await page.goto('https://bequalified-gmbh.personio.de/');
+    await page.goto('https://google.com/');
     console.log(await page.title());
 });
 
@@ -77,30 +77,47 @@ test('client login app', async ({page})=>
 {
     const products = page.locator('.card-body');
     const productName = "zara coat 3";
-    const username = page.locator('#userEmail');
+    const userName = page.locator('#userEmail');
+    const userEmail = "anshika@gmail.com";
     const pwd = page.locator('#userPassword');
     const loginBtn = page.locator('#login');
     await page.goto('https://rahulshettyacademy.com/client/');
-    await username.type("anshika@gmail.com")
+    await userName.type(userEmail)
     await pwd.type("Iamking@000");
-
     await loginBtn.click();
+
     await page.waitForLoadState('networkidle');
     const  tittle = await page.locator('.card-body b').allTextContents();
     console.log(tittle);
     const count = await products.count();
     for (let i=0; i < count; i++)
     {
-        if (await products.nth(i).locator("b").textContent()===productName)
+        if (await products.nth(i).locator("b").textContent() === productName)
         {
-            console.log(await products.nth(i).locator("b").textContent());
             await  products.nth(i).locator("text= Add To Cart").click();
             break;
         }
     }    
     await page.locator("[routerlink*='cart']").click();
     await page.locator("div li").first().waitFor();
-    const cardHasItem =  await  page.locator("h3:has-text('zara coat 3')").isVisible();
+    const cardHasItem = await page.locator("h3:has-text('zara coat 3')").isVisible();
     expect(cardHasItem).toBeTruthy();
+    await page.locator("text=Checkout").click();
+    await page.locator("[placeholder*='Country']").type("ind",{delay:100});
+    const dropdown = page.locator(".ta-results");
+    await dropdown.waitFor();
+    const optionCounts = await dropdown.locator("button").count();
+    for (let i=0; i<optionCounts; i++)
+    {
+        const text = await dropdown.locator("button").nth(i).textContent();
+        if (text === " India")
+        {
+            await dropdown.locator("button").nth(i).click();
+            break;
+        }
+    }
+    await expect(page.locator("label[type='text']")).toHaveText(userEmail);
+    await page.locator(".action__submit").click();
+    await expect(page.locator(".hero-primary")).toHaveText("Thankyou for the order.");
 
 });

@@ -10,8 +10,8 @@ const config = {
   },
   reporter: 'html',
   use: {
-    browserName : 'firefox',
-    headless: false,
+    browserName : 'webkit',
+    headless: true,
     screenshoot: 'on',
     trace: 'retain-on-failure',
   }
