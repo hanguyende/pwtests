@@ -8,6 +8,7 @@ const config = {
   expect: {
     timeout: 5000
   },
+  fullyParallel:true,
   reporter: 'html',
   use: {
     browserName : 'webkit',

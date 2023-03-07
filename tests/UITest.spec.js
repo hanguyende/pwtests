@@ -102,6 +102,7 @@ test('client login app', async ({page})=>
     await page.locator("div li").first().waitFor();
     const cardHasItem = await page.locator("h3:has-text('zara coat 3')").isVisible();
     expect(cardHasItem).toBeTruthy();
+    //await page.pause();
     await page.locator("text=Checkout").click();
     await page.locator("[placeholder*='Country']").type("ind",{delay:100});
     const dropdown = page.locator(".ta-results");
