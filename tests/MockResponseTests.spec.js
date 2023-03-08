@@ -2,6 +2,7 @@ const {test, expect, request} = require('@playwright/test');
 const {ApiUtils} = require('./Utils/ApiUtils');
 const loginPayLoad = {userEmail:"anshika@gmail.com", userPassword:"Iamking@000"};
 const orderPayLoad = {orders:[{country:"India", productOrderedId:"6262e95ae26b7e1a10e89bf0"}]};
+const fakePayload = {data:[],message:"No Orders"};
 let response;
 
 test.beforeAll( async () =>
@@ -11,7 +12,7 @@ test.beforeAll( async () =>
     response = await apiUtils.createOrder(orderPayLoad);    
 });
 
-test('CheckOrders', async ({page})=>
+test.only('CheckOrders', async ({page})=>
 {
     page.addInitScript(value => 
         {
@@ -19,21 +20,19 @@ test('CheckOrders', async ({page})=>
         }, response.token
     );
     await page.goto('https://rahulshettyacademy.com/client/');
-    await page.locator("button[routerlink*='myorders']").click();
-    await page.locator("tbody").waitFor();
-    const ordersItem = page.locator("tbody tr");
-    console.log(ordersItem.count);
-    const count = await ordersItem.count();
-    for (let i=0; i<count; ++i)
+    await page.route('https://rahulshettyacademy.com/api/ecom/order/get-orders-for-customer/620c7bf148767f1f1215d2ca',
+    async route=>
     {
-        const rowOrderId = await ordersItem.nth(i).locator("th").textContent();
-        
-        if(response.orderId.includes(rowOrderId))
-        {
-            await ordersItem.nth(i).locator("button").first().click();
-            break;
-        }
-    } 
-    const orderIdDetails = await page.locator(".col-text").textContent();
-    expect(response.orderId.includes(orderIdDetails)).toBeTruthy();    
+        const response = await page.request.fetch(route.request());
+        let body = fakePayload;
+        route.fulfill(
+            {
+            response,
+            body,
+
+        });
+    });
+
+    await page.locator("button[routerlink*='myorders']").click();
+    console.log(await page.locator(".mt-4").textContent());    
 });

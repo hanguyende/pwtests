@@ -12,7 +12,7 @@ const config = {
   reporter: 'html',
   use: {
     browserName : 'webkit',
-    headless: true,
+    headless: false,
     screenshoot: 'on',
     trace: 'retain-on-failure',
   }
