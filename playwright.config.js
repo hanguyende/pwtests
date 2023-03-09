@@ -11,7 +11,7 @@ const config = {
   fullyParallel:true,
   reporter: 'html',
   use: {
-    browserName : 'webkit',
+    browserName : 'chromium',
     headless: false,
     screenshoot: 'on',
     trace: 'retain-on-failure',

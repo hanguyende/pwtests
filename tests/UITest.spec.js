@@ -40,6 +40,10 @@ test('test browser login', async ({page})=>
     const loginBtn = page.locator('#signInBtn');
     const cardTitles =  page.locator('.card-body a');
     await page.goto('https://rahulshettyacademy.com/loginpagePractise/');
+    page.route('**/*.{jpg, png, jpeg}', route => route.abort());
+
+    page.on('request', request=> console.log(request.url()));
+    page.on('response', response=> console.log(response.url(), response.status()));
     console.log(await page.title());
     await username.type('rahulshettyacademy');
     await pwd.type('learning');
@@ -47,6 +51,7 @@ test('test browser login', async ({page})=>
         page.waitForNavigation(),
         loginBtn.click()
         ])
+    await page.pause();
     const allTittle = await cardTitles.allTextContents();
     console.log(allTittle);
 
@@ -71,4 +76,20 @@ test('test new windows context', async ({browser})=>
     console.log(domain);
     await username.type(domain);
     console.log(await username.textContent);
+});
+
+test('take screenshoot', async ({page})=>
+{
+    await page.goto('https://rahulshettyacademy.com/AutomationPractice/');
+    await expect(page.locator("#displayed-text")).toBeVisible();
+    await page.locator('#displayed-text').screenshot({path:'partialScreenshot.png'});
+    await page.locator("#hide-textbox").click();
+    await page.screenshot({path: 'screenshot.png'});
+    await expect(page.locator("#displayed-text")).toBeHidden();
+});
+
+test('screenshoot compair', async ({page})=>
+{   
+    await page.goto('https://google.com/');
+    expect(await page.screenshot()).toMatchSnapshot('landing.png');
 });

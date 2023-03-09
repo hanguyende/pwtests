@@ -1,7 +1,7 @@
 const {test, expect} = require('@playwright/test');
 const {ApiUtils} = require('./Utils/ApiUtils');
 const loginPayLoad = {userEmail:"anshika@gmail.com", userPassword:"Iamking@000"};
-const orderPayLoad = {orders:[{country:"India", productOrderedId:"6262e95ae26b7e1a10e89bf0"}]};
+const orderPayLoad = {orders:[{country:"Cuba", productOrderedId:"6262e95ae26b7e1a10e89bf0"}]};
 let webContext;
 
 test.beforeAll( async ({browser}) =>
@@ -29,6 +29,7 @@ test('client login app', async ()=>
     await page.goto('https://rahulshettyacademy.com/client/');
     const products = page.locator('.card-body');
     const productName = "zara coat 3";
+    await page.waitForLoadState('networkidle');
     const  tittle = await page.locator('.card-body b').allTextContents();
     
     const count = await products.count();
