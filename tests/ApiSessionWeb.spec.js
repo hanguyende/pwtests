@@ -1,5 +1,5 @@
 const {test, expect} = require('@playwright/test');
-const {ApiUtils} = require('./Utils/ApiUtils');
+const {ApiUtils} = require('../Utils/ApiUtils');
 const loginPayLoad = {userEmail:"anshika@gmail.com", userPassword:"Iamking@000"};
 const orderPayLoad = {orders:[{country:"Cuba", productOrderedId:"6262e95ae26b7e1a10e89bf0"}]};
 let webContext;
@@ -44,6 +44,7 @@ test('client login app', async ()=>
     }
     await page.locator("button label:has-text('1')").isVisible();
     await page.locator("[routerlink*='cart']").click();
+    await page.waitForLoadState('networkidle');
     await page.locator("div li").first().waitFor();
     const cardHasItem = await page.locator("h3:has-text('zara coat 3')").isVisible();
     expect(cardHasItem).toBeTruthy();

@@ -51,7 +51,7 @@ test('test browser login', async ({page})=>
         page.waitForNavigation(),
         loginBtn.click()
         ])
-    await page.pause();
+    //await page.pause();
     const allTittle = await cardTitles.allTextContents();
     console.log(allTittle);
 
@@ -91,5 +91,5 @@ test('take screenshoot', async ({page})=>
 test('screenshoot compair', async ({page})=>
 {   
     await page.goto('https://google.com/');
-    expect(await page.screenshot()).toMatchSnapshot('landing.png');
+    expect(await page.screenshot()).toMatchSnapshot('google.png');
 });
